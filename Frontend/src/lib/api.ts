@@ -8,6 +8,9 @@ export const ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/users/login`,
     REGISTER: `${API_BASE_URL}/users/register`,
   },
+  TRIPS: {
+    MY_TRIPS: `${API_BASE_URL}/trips/my-trips`,
+  },
   // Add other feature endpoints here as the app grows
   // e.g., TRIPS: { CREATE: `${API_BASE_URL}/trips/create` }
 };

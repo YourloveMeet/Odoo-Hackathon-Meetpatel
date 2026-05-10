@@ -17,6 +17,16 @@ export default function Register() {
     additionalInfo: "",
     password: ""
   });
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'warning'; visible: boolean }>({
+    message: '',
+    type: 'success',
+    visible: false
+  });
+
+  const showNotification = (message: string, type: 'success' | 'error' | 'warning') => {
+    setNotification({ message, type, visible: true });
+    setTimeout(() => setNotification(prev => ({ ...prev, visible: false })), 4000);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,40 +48,54 @@ export default function Register() {
     e.preventDefault();
 
     if (!profileImage) {
-      alert("A profile photo is required to create an account.");
+      showNotification("A profile photo is required", "warning");
       return;
     }
 
     try {
-      const payload = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phoneNumber: formData.phone,
-        city: formData.city,
-        country: formData.country,
-        additionalInfo: formData.additionalInfo,
-        photo: imagePreview || "",
-        password: formData.password
-      };
+      // Basic validation
+      const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'city', 'country', 'password'];
+      const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData]);
+      
+      if (missingFields.length > 0) {
+        showNotification("Please fill in all required fields", "warning");
+        return;
+      }
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("firstName", formData.firstName);
+      formDataToSend.append("lastName", formData.lastName);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("phoneNumber", formData.phone);
+      formDataToSend.append("city", formData.city);
+      formDataToSend.append("country", formData.country);
+      formDataToSend.append("additionalInfo", formData.additionalInfo);
+      formDataToSend.append("password", formData.password);
+      
+      if (profileImage) {
+        formDataToSend.append("photo", profileImage);
+      }
 
       const response = await fetch(ENDPOINTS.AUTH.REGISTER, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: formDataToSend,
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert("Registration successful!");
-        window.location.href = "/login";
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        showNotification("Account created successfully! Redirecting...", "success");
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 1500);
       } else {
-        alert(data.message || "Registration failed");
+        showNotification(data.message || "Registration failed", "error");
       }
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("An error occurred during registration.");
+      showNotification("Connection error. Please try again.", "error");
     }
   };
 
@@ -80,6 +104,21 @@ export default function Register() {
       className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative px-4 py-4 md:py-8 overflow-hidden"
       style={{ backgroundImage: "url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop')" }}
     >
+      {/* Toast Notification */}
+      <div className={`fixed top-10 left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 ${notification.visible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0 pointer-events-none'}`}>
+        <div className={`px-6 py-3 rounded-full backdrop-blur-xl border flex items-center gap-3 shadow-2xl ${
+          notification.type === 'success' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 
+          notification.type === 'error' ? 'bg-red-500/20 border-red-500/50 text-red-400' : 
+          'bg-amber-500/20 border-amber-500/50 text-amber-400'
+        }`}>
+          <div className={`w-2 h-2 rounded-full animate-pulse ${
+            notification.type === 'success' ? 'bg-emerald-400' : 
+            notification.type === 'error' ? 'bg-red-400' : 'bg-amber-400'
+          }`}></div>
+          <span className="text-sm font-medium tracking-wide">{notification.message}</span>
+        </div>
+      </div>
+
       <div className="absolute inset-0 bg-emerald-950/40 backdrop-blur-[1px]"></div>
       
       <div className="absolute bottom-[-10%] left-[-5%] w-[30%] h-[30%] bg-emerald-400/10 rounded-full blur-[100px]"></div>

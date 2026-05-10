@@ -22,6 +22,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/trips", require("./routes/tripRoutes"));
+
 app.listen(5000, () => {
     console.log("Server Running");
 });
