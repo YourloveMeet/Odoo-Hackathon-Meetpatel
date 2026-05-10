@@ -50,7 +50,7 @@ export default function Navbar() {
   ] : [];
 
   const getImageUrl = (url: string) => {
-    if (!url) return null;
+    if (!url) return undefined;
     if (url.startsWith('http')) return url;
     const cleanUrl = url.replace(/\\/g, '/');
     return `http://localhost:5000${cleanUrl.startsWith('/') ? '' : '/'}${cleanUrl}`;

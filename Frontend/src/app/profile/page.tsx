@@ -121,6 +121,12 @@ export default function ProfilePage() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
+
   const preplannedTrips = trips.filter(t => t.status === "upcoming" || t.status === "ongoing");
   const previousTrips = trips.filter(t => t.status === "completed");
 
@@ -181,17 +187,27 @@ export default function ProfilePage() {
                   <h1 className="text-5xl font-light tracking-tight italic text-emerald-900">User <span className="font-semibold italic">Profile</span></h1>
                   <p className="text-emerald-900/60 font-medium text-[10px] uppercase tracking-[0.4em]">Personal Information</p>
                 </div>
-                <button 
-                  onClick={() => isEditing ? handleUpdateProfile() : setIsEditing(true)}
-                  disabled={saving}
-                  className={`px-10 py-4 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all ${
-                    isEditing 
-                    ? 'bg-emerald-900 text-white shadow-[0_20px_40px_-10px_rgba(6,78,59,0.3)] hover:bg-emerald-800' 
-                    : 'bg-emerald-100 text-emerald-900 border border-emerald-900/5 hover:bg-emerald-200'
-                  }`}
-                >
-                  {saving ? "Saving..." : isEditing ? "Save Changes" : "Edit Profile"}
-                </button>
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => isEditing ? handleUpdateProfile() : setIsEditing(true)}
+                    disabled={saving}
+                    className={`px-10 py-4 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all ${
+                      isEditing 
+                      ? 'bg-emerald-900 text-white shadow-[0_20px_40px_-10px_rgba(6,78,59,0.3)] hover:bg-emerald-800' 
+                      : 'bg-emerald-100 text-emerald-900 border border-emerald-900/5 hover:bg-emerald-200'
+                    }`}
+                  >
+                    {saving ? "Saving..." : isEditing ? "Save Changes" : "Edit Profile"}
+                  </button>
+                  {!isEditing && (
+                    <button 
+                      onClick={handleLogout}
+                      className="px-10 py-4 rounded-full font-bold text-[10px] uppercase tracking-widest border border-red-100 bg-red-50/50 text-red-600 hover:bg-red-50 hover:border-red-200 transition-all"
+                    >
+                      Logout
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
