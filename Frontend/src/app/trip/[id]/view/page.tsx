@@ -128,6 +128,12 @@ export default function TripView({ params }: { params: Promise<{ id: string }> }
           <p className="text-emerald-900/60 uppercase tracking-[0.3em] text-xs font-bold">
             Full Journey Details
           </p>
+          <div className="pt-6">
+            <Link href={`/trip/${id}/itinerary`} className="inline-flex items-center gap-3 px-8 py-4 bg-emerald-900 text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-800 transition-all shadow-xl shadow-emerald-900/20">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+              Edit Itinerary
+            </Link>
+          </div>
         </div>
 
         {/* Quick Insights Grid */}

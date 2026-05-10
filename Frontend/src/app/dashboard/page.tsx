@@ -6,11 +6,11 @@ import { ENDPOINTS } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 
 const REGIONS = [
-  { id: 1, name: "Swiss Alps", image: "https://images.unsplash.com/photo-1531310197839-ccf54634509e?q=80&w=1000&auto=format&fit=crop" },
+  { id: 1, name: "Swiss Alps", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1000&auto=format&fit=crop" },
   { id: 2, name: "Kyoto, Japan", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000&auto=format&fit=crop" },
   { id: 3, name: "Santorini", image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?q=80&w=1000&auto=format&fit=crop" },
   { id: 4, name: "Bali, Indonesia", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=1000&auto=format&fit=crop" },
-  { id: 5, name: "Iceland", image: "https://images.unsplash.com/photo-1521339225886-490bf735ad04?q=80&w=1000&auto=format&fit=crop" },
+  { id: 5, name: "Iceland", image: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?q=80&w=1000&auto=format&fit=crop" },
 ];
 
 const PREVIOUS_TRIPS = [
@@ -168,7 +168,7 @@ export default function Dashboard() {
                       <p className="text-white/60 text-[8px] font-bold uppercase tracking-[0.4em] mb-2">
                         {new Date(trip.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                       </p>
-                      <h4 className="text-xl font-light tracking-tight text-white group-hover:text-emerald-200 transition-colors">{trip.name}</h4>
+                      <h4 className="text-xl font-light tracking-tight text-white group-hover:text-emerald-200 transition-colors break-words">{trip.name}</h4>
                     </div>
                   </div>
                 </Link>

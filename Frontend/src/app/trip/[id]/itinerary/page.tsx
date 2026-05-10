@@ -823,8 +823,8 @@ export default function ItineraryPage({ params }: { params: Promise<{ id: string
                             >
                               <div className="flex items-center gap-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-emerald-900/20" viewBox="0 0 20 20" fill="currentColor"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
-                                <div>
-                                  <p className="font-bold text-emerald-900">{act.customName}</p>
+                                <div className="min-w-0">
+                                  <p className="font-bold text-emerald-900 break-all">{act.customName}</p>
                                   <p className="text-[10px] text-emerald-900/60 font-medium uppercase tracking-widest mt-1">{act.scheduledTime} • {act.durationMins} mins</p>
                                 </div>
                               </div>
@@ -860,7 +860,7 @@ export default function ItineraryPage({ params }: { params: Promise<{ id: string
       {isStopModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-emerald-950/40 backdrop-blur-sm" onClick={() => setIsStopModalOpen(false)}></div>
-          <div className="relative w-full max-w-3xl bg-white/90 backdrop-blur-xl rounded-[3rem] shadow-2xl border border-white p-10 max-h-[90vh] overflow-y-auto overflow-x-hidden">
+          <div className="relative w-full max-w-3xl bg-white rounded-[3rem] shadow-2xl border border-white/20 p-10 max-h-[90vh] overflow-y-auto overflow-x-hidden transform-gpu">
             
             <button onClick={() => {
               if (citySearchTarget) { setCitySearchTarget(null); setSearchQuery(""); }
@@ -948,7 +948,7 @@ export default function ItineraryPage({ params }: { params: Promise<{ id: string
                   {filteredCities.map(city => (
                     <div key={city._id} onClick={() => { selectCity(city); setCitySearchTarget(null); }} className="group flex flex-col md:flex-row items-center gap-4 p-3 rounded-2xl border border-emerald-900/5 bg-white/60 hover:bg-emerald-50 cursor-pointer transition-all shadow-sm">
                       <div className="w-full md:w-24 h-20 rounded-xl overflow-hidden flex-shrink-0">
-                        <img src={city.imageUrl || "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2"} alt={city.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                        <img src={city.imageUrl || "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2"} alt={city.name} className="w-full h-full object-cover transition-transform duration-500 will-change-transform" loading="lazy" />
                       </div>
                       <div className="flex-1 w-full">
                         <div className="flex justify-between items-start">
@@ -978,7 +978,7 @@ export default function ItineraryPage({ params }: { params: Promise<{ id: string
       {isActivityModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-emerald-950/40 backdrop-blur-sm" onClick={() => setIsActivityModalOpen(false)}></div>
-          <div className="relative w-full max-w-lg bg-white/90 backdrop-blur-xl rounded-[3rem] shadow-2xl border border-white p-10 max-h-[90vh] overflow-y-auto overflow-x-hidden">
+          <div className="relative w-full max-w-lg bg-white rounded-[3rem] shadow-2xl border border-white/20 p-10 max-h-[90vh] overflow-y-auto overflow-x-hidden transform-gpu">
             
             <button onClick={() => {
               if (isCatalogSearchOpen) { setIsCatalogSearchOpen(false); setSearchQuery(""); }
@@ -1045,7 +1045,7 @@ export default function ItineraryPage({ params }: { params: Promise<{ id: string
                   {filteredCatalog.map(act => (
                     <div key={act._id} onClick={() => { selectCatalogActivity(act); setIsCatalogSearchOpen(false); }} className="group flex flex-col items-start gap-4 p-4 rounded-2xl border border-emerald-900/5 bg-white/60 hover:bg-emerald-50 cursor-pointer transition-all shadow-sm">
                       <div className="w-full h-24 rounded-xl overflow-hidden">
-                        <img src={act.imageUrl || "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f"} alt={act.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                        <img src={act.imageUrl || "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f"} alt={act.name} className="w-full h-full object-cover transition-transform duration-500 will-change-transform" loading="lazy" />
                       </div>
                       <div className="w-full">
                         <div className="flex justify-between items-start">

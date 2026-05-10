@@ -102,13 +102,13 @@ export default function MyTrips() {
                       <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-900/40">
                         {new Date(trip.startDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })} — {new Date(trip.endDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </p>
-                      <h4 className="text-2xl font-light tracking-tight text-emerald-900 group-hover:text-emerald-700 transition-colors">
+                      <h4 className="text-2xl font-light tracking-tight text-emerald-900 group-hover:text-emerald-700 transition-colors break-words">
                         {trip.name}
                       </h4>
                     </div>
                     <div className="text-right">
                       <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-900/30 mb-1">Short Overview</p>
-                      <p className="text-sm text-emerald-900/60 max-w-md line-clamp-1 italic">
+                      <p className="text-sm text-emerald-900/60 max-w-md line-clamp-1 italic break-words">
                         {trip.description || "Discover the wonders of this planned journey..."}
                       </p>
                     </div>

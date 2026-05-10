@@ -277,7 +277,7 @@ export default function ChecklistPage({ params }: { params: Promise<{ id: string
                         </div>
 
                         {/* Item Name */}
-                        <span className={`text-base transition-all ${item.isPacked ? "text-emerald-900/40 line-through" : "text-emerald-900 group-hover:text-emerald-700"}`}>
+                        <span className={`text-base transition-all break-all min-w-0 ${item.isPacked ? "text-emerald-900/40 line-through" : "text-emerald-900 group-hover:text-emerald-700"}`}>
                           {item.itemName}
                           {item.quantity > 1 && (
                             <span className="ml-2 text-xs text-emerald-900/40 font-medium">×{item.quantity}</span>

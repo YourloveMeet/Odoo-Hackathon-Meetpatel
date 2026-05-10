@@ -79,6 +79,60 @@ export default function BudgetInvoicePage({ params }: { params: Promise<{ id: st
     item.title.toLowerCase().includes(search.toLowerCase()) || 
     item.category.toLowerCase().includes(search.toLowerCase())
   );
+  const handleDownloadCSV = () => {
+    const headers = ["#", "Category", "Title", "Description", "Amount"];
+    const rows = filteredItems.map((item, idx) => [
+      idx + 1,
+      item.category,
+      item.title,
+      item.description || "N/A",
+      item.amount
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map(row => row.map(val => `"${val}"`).join(","))
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Budget_${trip?.name || 'Trip'}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleExportPDF = async () => {
+    const element = document.getElementById('invoice-content');
+    if (!element) return;
+
+    try {
+      const html2canvas = (await import('html2canvas')).default;
+      const jsPDF = (await import('jspdf')).jsPDF;
+
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#f7f9f7',
+        logging: false,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Invoice_${trip?.name || 'Trip'}.pdf`);
+    } catch (err) {
+      console.error("PDF Export failed", err);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#f7f9f7] text-emerald-950 font-light selection:bg-emerald-200 overflow-x-hidden">
@@ -121,7 +175,7 @@ export default function BudgetInvoicePage({ params }: { params: Promise<{ id: st
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
             
             {/* Main Invoice Section */}
-            <div className="lg:col-span-3 space-y-10">
+            <div id="invoice-content" className="lg:col-span-3 space-y-10">
               
               {/* Header Info Card */}
               <div className="bg-white/70 backdrop-blur-sm border border-emerald-900/5 rounded-[2.5rem] p-10 flex flex-wrap gap-12 shadow-sm">
@@ -197,8 +251,8 @@ export default function BudgetInvoicePage({ params }: { params: Promise<{ id: st
                             {item.category}
                           </span>
                         </td>
-                        <td className="px-10 py-8 text-emerald-900 font-bold text-sm">{item.title}</td>
-                        <td className="px-10 py-8 text-emerald-900/40 text-[11px] font-medium italic">{item.description || "System automatic"}</td>
+                        <td className="px-10 py-8 text-emerald-900 font-bold text-sm break-all">{item.title}</td>
+                        <td className="px-10 py-8 text-emerald-900/40 text-[11px] font-medium italic break-all">{item.description || "System automatic"}</td>
                         <td className="px-10 py-8 text-emerald-900/60 font-bold text-xs">{fmt(item.amount)}</td>
                         <td className="px-10 py-8 text-emerald-900 font-black text-sm text-right">{fmt(item.amount)}</td>
                       </tr>
@@ -297,11 +351,17 @@ export default function BudgetInvoicePage({ params }: { params: Promise<{ id: st
         {/* Floating Footer Actions */}
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-6 px-10 py-5 bg-white/80 backdrop-blur-2xl border border-emerald-900/5 shadow-2xl z-50 min-w-[500px] justify-center rounded-[2rem]">
           <div className="flex items-center gap-4">
-            <button className="px-8 py-3 bg-emerald-900/5 hover:bg-emerald-900/10 text-emerald-900 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center gap-2 border border-emerald-900/5">
+            <button 
+              onClick={handleDownloadCSV}
+              className="px-8 py-3 bg-emerald-900/5 hover:bg-emerald-900/10 text-emerald-900 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center gap-2 border border-emerald-900/5"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
               Download
             </button>
-            <button className="px-8 py-3 bg-emerald-900 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center gap-2 shadow-xl shadow-emerald-900/20 hover:scale-105 active:scale-95 transition-transform">
+            <button 
+              onClick={handleExportPDF}
+              className="px-8 py-3 bg-emerald-900 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center gap-2 shadow-xl shadow-emerald-900/20 hover:scale-105 active:scale-95 transition-transform"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
               PDF Export
             </button>

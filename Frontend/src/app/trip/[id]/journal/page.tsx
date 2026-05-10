@@ -271,14 +271,14 @@ export default function JournalPage({ params }: { params: Promise<{ id: string }
               return (
                 <div key={n._id} className={`bg-white border-l-4 ${borderAccent[effectiveType]} border border-emerald-900/5 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all`}>
                   <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1 space-y-3">
+                    <div className="flex-1 space-y-3 min-w-0">
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className={`text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-full ${badgeBg[effectiveType]}`}>
                           {effectiveType}
                         </span>
-                        <h3 className="text-lg font-semibold text-emerald-900">{n.title}</h3>
+                        <h3 className="text-lg font-semibold text-emerald-900 break-all">{n.title}</h3>
                       </div>
-                      <p className="text-emerald-900/60 leading-relaxed text-sm">{n.note}</p>
+                      <p className="text-emerald-900/60 leading-relaxed text-sm break-all whitespace-pre-wrap">{n.note}</p>
                       <p className="text-[10px] text-emerald-900/30 font-medium uppercase tracking-widest">
                         {new Date(n.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                       </p>
