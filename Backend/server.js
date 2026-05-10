@@ -27,7 +27,7 @@ app.use("/api/stops", require("./routes/stopRoutes"));
 app.use("/api/cities", require("./routes/cityRoutes"));
 app.use("/api/dayplans", require("./routes/dayPlanRoutes"));
 app.use("/api/activities", require("./routes/activityRoutes"));
-
+app.use("/api/activity-catalog", require("./routes/activityCatalogRoutes"));
 
 app.listen(5000, () => {
     console.log("Server Running");
