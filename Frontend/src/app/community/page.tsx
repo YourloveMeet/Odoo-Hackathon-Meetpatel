@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ENDPOINTS } from "@/lib/api";
+import Navbar from "@/components/Navbar";
 
 export default function CommunityPage() {
   const [search, setSearch] = useState("");
@@ -55,32 +56,12 @@ export default function CommunityPage() {
 
   return (
     <div className="min-h-screen bg-[#f7f9f7] text-emerald-950 font-light selection:bg-emerald-200 selection:text-emerald-900 overflow-x-hidden">
+      <Navbar />
       {/* Background Ambience */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] right-[-5%] w-[50%] h-[50%] bg-emerald-100 rounded-full blur-[120px] opacity-60"></div>
         <div className="absolute bottom-[-10%] left-[-5%] w-[50%] h-[50%] bg-[#e8f2e8] rounded-full blur-[120px] opacity-60"></div>
       </div>
-
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/40 border-b border-emerald-900/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/dashboard" className="text-2xl font-bold tracking-tighter italic text-emerald-900 hover:text-emerald-700 transition-colors">
-            Traveloop
-          </Link>
-          <div className="flex items-center gap-6">
-            <nav className="hidden md:flex items-center gap-8 text-[10px] uppercase tracking-[0.3em] text-emerald-900/40 font-black">
-              <Link href="/dashboard" className="hover:text-emerald-600 transition-colors">Dashboard</Link>
-              <Link href="/community" className="text-emerald-600 transition-colors">Community</Link>
-              <Link href="/my-trips" className="hover:text-emerald-600 transition-colors">My Trips</Link>
-            </nav>
-            <Link href="/profile" className="w-10 h-10 rounded-full border border-emerald-900/10 bg-white/50 flex items-center justify-center cursor-pointer hover:bg-emerald-100 transition-all shadow-sm overflow-hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </header>
 
       <main className="pt-32 pb-20 px-6 max-w-4xl mx-auto space-y-12">
         {/* Controls Section */}

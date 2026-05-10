@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { ENDPOINTS } from "@/lib/api";
+import Navbar from "@/components/Navbar";
 
 const REGIONS = [
   { id: 1, name: "Swiss Alps", image: "https://images.unsplash.com/photo-1531310197839-ccf54634509e?q=80&w=1000&auto=format&fit=crop" },
@@ -64,78 +65,68 @@ export default function Dashboard() {
       result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
 
-    return result;
+    return result.slice(0, 3);
   }, [trips, search, sortBy]);
-
   return (
-    <div className="min-h-screen bg-[#f7f9f7] text-emerald-950 font-light selection:bg-emerald-200 selection:text-emerald-900 overflow-x-hidden">
+    <div className="min-h-screen bg-[#f7f9f7] text-emerald-950 font-light selection:bg-emerald-200 overflow-x-hidden">
+      <Navbar />
       {/* Glowy Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] right-[-5%] w-[50%] h-[50%] bg-emerald-100 rounded-full blur-[120px] opacity-60"></div>
         <div className="absolute bottom-[-10%] left-[-5%] w-[50%] h-[50%] bg-[#e8f2e8] rounded-full blur-[120px] opacity-60"></div>
-        <div className="absolute top-[30%] left-[20%] w-[30%] h-[30%] bg-emerald-50 rounded-full blur-[100px] opacity-40"></div>
       </div>
 
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/40 border-b border-emerald-900/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <h1 className="text-2xl font-bold tracking-tighter italic text-emerald-900">Traveloop</h1>
-          <div className="flex items-center gap-6">
-            <nav className="hidden md:flex items-center gap-8 text-[10px] uppercase tracking-[0.3em] text-emerald-900/40 font-black">
-              <Link href="/community" className="hover:text-emerald-600 transition-colors">Community</Link>
-              <Link href="/my-trips" className="hover:text-emerald-600 transition-colors">My Trips</Link>
-              <a href="#" className="hover:text-emerald-600 transition-colors">Support</a>
-            </nav>
-            <Link href="/profile" className="w-10 h-10 rounded-full border border-emerald-900/10 bg-white/50 flex items-center justify-center cursor-pointer hover:bg-emerald-100 transition-all shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <main className="pt-32 pb-20 px-8 max-w-7xl mx-auto space-y-16">
 
-      <main className="pt-24 pb-20 px-6 max-w-7xl mx-auto space-y-12">
         {/* Banner Section */}
-        <section className="relative h-[450px] rounded-[3rem] overflow-hidden group shadow-2xl">
+        <section className="relative h-[500px] rounded-[3.5rem] overflow-hidden group shadow-2xl">
           <img 
             src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop" 
             alt="Hero Banner" 
             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/20 to-transparent"></div>
-          <div className="absolute bottom-12 left-12 space-y-4 max-w-2xl">
-            <span className="px-4 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-bold uppercase tracking-widest">Featured Journey</span>
-            <h2 className="text-6xl font-light tracking-tighter leading-none text-white">The Great <span className="font-semibold italic">Outdoor</span> Escape</h2>
-            <p className="text-white/80 text-lg">Discover hidden valleys and crystal-clear lakes in the heart of nature.</p>
+          <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-emerald-950/20 to-transparent"></div>
+          <div className="absolute bottom-16 left-16 space-y-4 max-w-2xl">
+            <span className="px-5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-black uppercase tracking-[0.2em]">Featured Journey</span>
+            <h2 className="text-6xl md:text-7xl font-light tracking-tighter leading-[0.9] text-white">The Great <span className="font-semibold italic">Outdoor</span> Escape</h2>
+            <p className="text-white/70 text-xl font-light">Discover hidden valleys and crystal-clear lakes in the heart of nature.</p>
           </div>
         </section>
 
-        {/* Controls Section */}
-        <section className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1 relative group">
-            <input 
-              type="text" 
-              placeholder="Search your next destination..." 
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white/60 border border-emerald-900/5 rounded-2xl py-4 pl-14 pr-6 outline-none focus:border-emerald-900/20 transition-all placeholder:text-emerald-900/40 text-emerald-900 shadow-sm backdrop-blur-md"
-            />
-            <svg xmlns="http://www.w3.org/2000/svg" className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-emerald-900/20 group-focus-within:text-emerald-700 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+        {/* Wireframe Search & Controls */}
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center gap-3">
+            {/* Search Input */}
+            <div className="flex-1 relative w-full group">
+              <input 
+                type="text" 
+                placeholder="Search your next destination..." 
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full h-14 bg-white border border-emerald-900/10 rounded-2xl pl-12 pr-6 text-sm focus:outline-none focus:border-emerald-900/30 transition-all placeholder:text-emerald-900/20 text-emerald-900 shadow-sm"
+              />
+              <svg xmlns="http://www.w3.org/2000/svg" className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-900/20 group-focus-within:text-emerald-900/40 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-2 w-full md:w-auto">
+              <button className="flex-1 md:flex-none h-14 px-8 bg-white/60 backdrop-blur-md border border-emerald-900/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-emerald-900/40 hover:text-emerald-900 hover:bg-white transition-all">
+                Group by
+              </button>
+              <button className="flex-1 md:flex-none h-14 px-8 bg-white/60 backdrop-blur-md border border-emerald-900/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-emerald-900/40 hover:text-emerald-900 hover:bg-white transition-all">
+                Filter
+              </button>
+              <button 
+                onClick={() => setSortBy(prev => prev === 'date' ? 'name' : 'date')}
+                className="flex-1 md:flex-none h-14 px-8 bg-emerald-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-800 transition-all shadow-xl shadow-emerald-900/20 whitespace-nowrap"
+              >
+                Sort by: <span className="text-emerald-400 ml-1">{sortBy === 'date' ? 'Latest' : 'Name'}</span>
+              </button>
+            </div>
           </div>
-          <div className="flex gap-4">
-            <button className="px-6 py-4 bg-white/60 border border-emerald-900/5 rounded-2xl text-emerald-900/40 font-bold text-[10px] uppercase tracking-widest hover:border-emerald-900/20 hover:text-emerald-900 transition-all whitespace-nowrap shadow-sm backdrop-blur-md">Group by</button>
-            <button className="px-6 py-4 bg-white/60 border border-emerald-900/5 rounded-2xl text-emerald-900/40 font-bold text-[10px] uppercase tracking-widest hover:border-emerald-900/20 hover:text-emerald-900 transition-all whitespace-nowrap shadow-sm backdrop-blur-md">Filter</button>
-            <button 
-              onClick={() => setSortBy(prev => prev === 'date' ? 'name' : 'date')}
-              className="px-8 py-4 bg-emerald-900 text-white rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-800 transition-all shadow-xl shadow-emerald-900/10 whitespace-nowrap"
-            >
-              Sort by: {sortBy === 'date' ? 'Latest' : 'Name'}
-            </button>
-          </div>
-        </section>
+        </div>
 
         {/* Regional Selections */}
         <section className="space-y-6">

@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { ENDPOINTS } from "@/lib/api";
+import Navbar from "@/components/Navbar";
 
 interface Trip {
   _id: string;
@@ -114,35 +115,8 @@ export default function TripView({ params }: { params: Promise<{ id: string }> }
       </div>
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/40 border-b border-emerald-900/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/dashboard" className="text-2xl font-bold tracking-tighter italic text-emerald-900 hover:text-emerald-700 transition-colors">
-            Traveloop
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href={`/trip/${id}/journal`} className="px-6 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-all flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-              Trip Journal
-            </Link>
-            <Link href={`/trip/${id}/checklist`} className="px-6 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-all flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-              </svg>
-              Packing Checklist
-            </Link>
-            <Link href={`/trip/${id}/itinerary`} className="px-6 py-2 bg-emerald-900 hover:bg-emerald-800 text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_10px_30px_-10px_rgba(6,78,59,0.5)]">
-              Edit Itinerary
-            </Link>
-            <Link href="/profile" className="w-10 h-10 rounded-full border border-emerald-900/10 bg-white/50 flex items-center justify-center cursor-pointer hover:bg-emerald-100 transition-all shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Navbar />
+
 
       <main className="pt-32 pb-32 px-6 max-w-4xl mx-auto">
         
@@ -152,35 +126,54 @@ export default function TripView({ params }: { params: Promise<{ id: string }> }
             Itinerary for <span className="italic text-emerald-700 font-semibold">{trip?.name}</span>
           </h2>
           <p className="text-emerald-900/60 uppercase tracking-[0.3em] text-xs font-bold">
-            Total Budget: {trip?.totalBudget} {trip?.currency}
+            Full Journey Details
           </p>
         </div>
 
-        {/* Checklist Quick Access Banner */}
-        <Link href={`/trip/${id}/checklist`} className="block mb-12 group">
-          <div className="relative overflow-hidden bg-white/70 border border-emerald-900/10 rounded-3xl p-6 flex items-center justify-between hover:shadow-xl hover:border-emerald-900/20 transition-all duration-300 backdrop-blur-sm cursor-pointer">
-            <div className="flex items-center gap-5">
-              <div className="w-14 h-14 bg-emerald-900 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                </svg>
+        {/* Quick Insights Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {/* Budget Insight */}
+          <Link href={`/trip/${id}/budget`} className="group">
+            <div className="relative h-full overflow-hidden bg-white/70 border border-emerald-900/10 rounded-3xl p-6 hover:shadow-xl hover:border-emerald-900/20 transition-all duration-300 backdrop-blur-sm">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-900 group-hover:scale-110 transition-transform">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-900/40">Total Budget</p>
+                  <p className="text-lg font-bold text-emerald-900">{trip?.totalBudget} <span className="text-[10px] opacity-40">{trip?.currency}</span></p>
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-900/40 mb-1">Don't forget anything</p>
-                <h3 className="text-xl font-semibold text-emerald-900">Packing Checklist</h3>
-                <p className="text-sm text-emerald-900/50 mt-0.5">Documents · Clothing · Electronics and more</p>
+              <p className="text-sm font-semibold text-emerald-900">Financial Overview</p>
+              <p className="text-xs text-emerald-900/50 mt-1">Track expenses, bookings and more</p>
+              <div className="mt-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-emerald-700">
+                View Budget 
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-900/40 group-hover:text-emerald-700 transition-colors">Open Checklist</span>
-              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center group-hover:bg-emerald-900 group-hover:text-white transition-all duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-900 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          </Link>
+
+          {/* Checklist Insight */}
+          <Link href={`/trip/${id}/checklist`} className="group">
+            <div className="relative h-full overflow-hidden bg-emerald-900 text-white rounded-3xl p-6 hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                </div>
+              </div>
+              <p className="text-sm font-semibold">Packing Checklist</p>
+              <p className="text-xs text-white/50 mt-1">Documents, clothes and essentials</p>
+              <div className="mt-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-emerald-300/80">
+                Open Checklist
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
               </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
 
         {/* Seamless Timeline */}
         <div className="relative">

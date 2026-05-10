@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { ENDPOINTS } from "@/lib/api";
+import Navbar from "@/components/Navbar";
 
 type NoteType = "trip" | "stop" | "day" | "activity";
 
@@ -200,21 +201,7 @@ export default function JournalPage({ params }: { params: Promise<{ id: string }
         <div className="absolute bottom-[-10%] left-[-5%] w-[50%] h-[50%] bg-[#e8f2e8] rounded-full blur-[120px] opacity-50" />
       </div>
 
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/40 border-b border-emerald-900/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/dashboard" className="text-2xl font-bold tracking-tighter italic text-emerald-900 hover:text-emerald-700 transition-colors">Traveloop</Link>
-          <div className="flex items-center gap-4">
-            <Link href={`/trip/${id}/view`} className="px-6 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-all flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-              Back to Itinerary
-            </Link>
-            <Link href="/profile" className="w-10 h-10 rounded-full border border-emerald-900/10 bg-white/50 flex items-center justify-center hover:bg-emerald-100 transition-all shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="pt-32 pb-24 px-6 max-w-3xl mx-auto space-y-8">
 
@@ -244,7 +231,7 @@ export default function JournalPage({ params }: { params: Promise<{ id: string }
             </h1>
           </div>
           <button onClick={openAddModal}
-            className="px-6 py-3 bg-emerald-900 text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-800 transition-all shadow-[0_10px_30px_-10px_rgba(6,78,59,0.4)] flex items-center gap-2">
+            className="px-6 py-3 bg-emerald-900 text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-800 transition-all shadow-[0_10px_30px_-10px_rgba(6,78,59,0.4)] flex items-center gap-2 whitespace-nowrap flex-shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
             Add Note
           </button>

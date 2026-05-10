@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ENDPOINTS } from "@/lib/api";
+import Navbar from "@/components/Navbar";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(null);
@@ -133,6 +134,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-[#f7f9f7] text-emerald-950 font-light selection:bg-emerald-200 selection:text-emerald-900 overflow-x-hidden pb-32">
+      <Navbar />
       {/* Glowy Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-5%] w-[50%] h-[50%] bg-emerald-100 rounded-full blur-[120px] opacity-60"></div>
@@ -150,19 +152,6 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
-
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/40 border-b border-emerald-900/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/dashboard" className="text-2xl font-bold tracking-tighter italic text-emerald-900 hover:opacity-70 transition-opacity">Traveloop</Link>
-          <button 
-            onClick={() => { localStorage.clear(); window.location.href = "/login"; }}
-            className="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-600 transition-colors"
-          >
-            Logout
-          </button>
-        </div>
-      </header>
 
       <main className="pt-32 px-6 max-w-7xl mx-auto space-y-24">
         {/* Profile Section */}

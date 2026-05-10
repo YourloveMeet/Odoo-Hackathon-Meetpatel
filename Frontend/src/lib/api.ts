@@ -52,4 +52,7 @@ export const ENDPOINTS = {
     UPDATE: (id: string) => `${API_BASE_URL}/notes/update/${id}`,
     DELETE: (id: string) => `${API_BASE_URL}/notes/delete/${id}`,
   },
+  BUDGET: {
+    FILTER: `${API_BASE_URL}/budget/filter`,
+  },
 };

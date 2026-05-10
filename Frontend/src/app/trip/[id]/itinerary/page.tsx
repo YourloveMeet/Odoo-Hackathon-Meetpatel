@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { ENDPOINTS } from "@/lib/api";
+import Navbar from "@/components/Navbar";
 
 interface City {
   _id: string;
@@ -701,48 +702,41 @@ export default function ItineraryPage({ params }: { params: Promise<{ id: string
         </div>
       )}
 
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/40 border-b border-emerald-900/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/dashboard" className="text-2xl font-bold tracking-tighter italic text-emerald-900 hover:opacity-70 transition-opacity">Traveloop</Link>
-          <Link href="/profile" className="w-10 h-10 rounded-full border border-emerald-900/10 bg-white/50 flex items-center justify-center cursor-pointer hover:bg-emerald-100 transition-all shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-          </Link>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="pt-32 px-6 max-w-5xl mx-auto space-y-12">
-        <div className="flex items-end justify-between">
-          <div className="space-y-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div className="space-y-4 flex-1 min-w-0">
             <Link href="/dashboard" className="text-[10px] font-bold uppercase tracking-widest text-emerald-900/40 hover:text-emerald-900 transition-colors flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" /></svg>
               Back to Dashboard
             </Link>
             <h1 className="text-4xl font-light tracking-tight italic text-emerald-900">Build <span className="font-semibold">Itinerary</span></h1>
-            <p className="text-emerald-900/60 font-medium">{trip?.name} • {trip?.description}</p>
+            <p className="text-emerald-900/60 font-medium max-w-2xl truncate" title={`${trip?.name} • ${trip?.description}`}>
+              {trip?.name} • {trip?.description}
+            </p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-shrink-0">
             
             {/* Privacy Toggle */}
-            <div className="flex items-center gap-3 bg-white/60 border border-emerald-900/5 px-5 py-3 rounded-full backdrop-blur-md">
-              <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${!trip?.isPublic ? 'text-emerald-900' : 'text-emerald-900/30'}`}>Private</span>
+            <div className="flex items-center gap-3 bg-white/60 border border-emerald-900/5 px-5 py-3 rounded-full backdrop-blur-md flex-shrink-0">
+              <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors whitespace-nowrap ${!trip?.isPublic ? 'text-emerald-900' : 'text-emerald-900/30'}`}>Private</span>
               <button 
                 onClick={handleTogglePrivacy}
-                className={`w-12 h-6 rounded-full relative transition-colors duration-300 focus:outline-none shadow-inner ${trip?.isPublic ? 'bg-emerald-500' : 'bg-emerald-900/20'}`}
+                className={`w-12 h-6 rounded-full relative transition-colors duration-300 focus:outline-none shadow-inner flex-shrink-0 ${trip?.isPublic ? 'bg-emerald-500' : 'bg-emerald-900/20'}`}
               >
                 <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-all duration-300 shadow-sm ${trip?.isPublic ? 'left-7' : 'left-1'}`}></div>
               </button>
-              <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${trip?.isPublic ? 'text-emerald-900' : 'text-emerald-900/30'}`}>Public</span>
+              <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors whitespace-nowrap ${trip?.isPublic ? 'text-emerald-900' : 'text-emerald-900/30'}`}>Public</span>
             </div>
-
-            <button onClick={() => handleOpenStopModal()} className="px-8 py-4 bg-emerald-900 text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-800 transition-all shadow-[0_10px_30px_-10px_rgba(6,78,59,0.5)] flex items-center gap-2">
+ 
+            <button onClick={() => handleOpenStopModal()} className="px-8 py-4 bg-emerald-900 text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-800 transition-all shadow-[0_10px_30px_-10px_rgba(6,78,59,0.5)] flex items-center gap-2 whitespace-nowrap flex-shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
               Add New Stop
             </button>
           </div>
         </div>
-
+ 
         <div className="space-y-12 relative before:absolute before:inset-y-0 before:left-8 before:w-px before:bg-emerald-900/10 before:-z-10 pl-4">
           {stops.map((stop, index) => {
             const fromCityName = cities.find(c => c._id === stop.fromCityId)?.name || "Unknown";
@@ -807,7 +801,7 @@ export default function ItineraryPage({ params }: { params: Promise<{ id: string
                           <button onClick={(e) => { e.stopPropagation(); day._id && handleDeleteDay(index, dIndex, day._id); }} className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-red-500/70 hover:text-red-600 hover:bg-red-50 border border-red-500/10 shadow-sm transition-all" title="Delete Day">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                           </button>
-                          <button onClick={(e) => { e.stopPropagation(); day._id && handleOpenActivityModal(index, day._id); }} className="text-[10px] font-bold uppercase tracking-widest text-emerald-900 hover:text-emerald-700 bg-white px-4 py-2 rounded-full border border-emerald-900/10 shadow-sm transition-colors">
+                          <button onClick={(e) => { e.stopPropagation(); day._id && handleOpenActivityModal(index, day._id); }} className="text-[10px] font-bold uppercase tracking-widest text-emerald-900 hover:text-emerald-700 bg-white px-4 py-2 rounded-full border border-emerald-900/10 shadow-sm transition-colors whitespace-nowrap flex-shrink-0">
                             + Add Activity
                           </button>
                         </div>
