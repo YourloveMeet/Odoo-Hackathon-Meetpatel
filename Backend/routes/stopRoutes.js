@@ -7,8 +7,12 @@ const auth = require("../middleware/auth");
 const Stop = require("../models/Stop");
 
 const Trip = require("../models/Trip");
+const BudgetItem = require("../models/BudgetItem");
+const DayPlan =
+    require("../models/DayPlan");
 
-
+const StopActivity =
+    require("../models/StopActivity");
 
 /*
 ========================================
@@ -169,6 +173,82 @@ router.post(
                 status
 
             });
+
+            // AUTO CREATE BUDGET ITEMS
+
+            // TRANSPORT
+            if (transportBudget > 0) {
+
+                await BudgetItem.create({
+
+                    tripId,
+
+                    stopId: stop._id,
+
+                    category: "transport",
+
+                    title: "Transport Budget",
+
+                    description:
+                        transportType + " transport expense",
+
+                    amount: transportBudget,
+
+                    date: travelDate
+
+                });
+
+            }
+
+
+            // STAY
+            if (stayBudget > 0) {
+
+                await BudgetItem.create({
+
+                    tripId,
+
+                    stopId: stop._id,
+
+                    category: "stay",
+
+                    title: "Hotel Stay",
+
+                    description:
+                        hotelName || "Hotel expense",
+
+                    amount: stayBudget,
+
+                    date: arrivalDate
+
+                });
+
+            }
+
+
+            // FOOD
+            if (foodBudget > 0) {
+
+                await BudgetItem.create({
+
+                    tripId,
+
+                    stopId: stop._id,
+
+                    category: "meals",
+
+                    title: "Food Budget",
+
+                    description:
+                        "Meals and food expenses",
+
+                    amount: foodBudget,
+
+                    date: arrivalDate
+
+                });
+
+            }
 
 
             res.status(201).json({
@@ -496,6 +576,73 @@ router.put(
 
             await stop.save();
 
+            // TRANSPORT
+            await BudgetItem.findOneAndUpdate(
+
+                {
+
+                    stopId: stop._id,
+
+                    category: "transport"
+
+                },
+
+                {
+
+                    amount: stop.transportBudget,
+
+                    description:
+                        stop.transportType +
+                        " transport expense"
+
+                }
+
+            );
+
+
+            // STAY
+            await BudgetItem.findOneAndUpdate(
+
+                {
+
+                    stopId: stop._id,
+
+                    category: "stay"
+
+                },
+
+                {
+
+                    amount: stop.stayBudget,
+
+                    description:
+                        stop.hotelName ||
+                        "Hotel expense"
+
+                }
+
+            );
+
+
+            // MEALS
+            await BudgetItem.findOneAndUpdate(
+
+                {
+
+                    stopId: stop._id,
+
+                    category: "meals"
+
+                },
+
+                {
+
+                    amount: stop.foodBudget
+
+                }
+
+            );
+
 
             res.json({
 
@@ -535,6 +682,12 @@ DELETE STOP
 ========================================
 */
 
+/*
+========================================
+DELETE STOP
+========================================
+*/
+
 router.delete(
 
     "/delete/:id",
@@ -561,6 +714,91 @@ router.delete(
 
             }
 
+
+            /*
+            ========================================
+            GET DAY PLANS
+            ========================================
+            */
+
+            const dayPlans =
+                await DayPlan.find({
+
+                    stopId: stop._id
+
+                });
+
+
+            /*
+            ========================================
+            DELETE ACTIVITIES + BUDGETS
+            ========================================
+            */
+
+            for (const day of dayPlans) {
+
+                const activities =
+                    await StopActivity.find({
+
+                        dayPlanId: day._id
+
+                    });
+
+
+                // DELETE ACTIVITY BUDGETS
+                for (const activity of activities) {
+
+                    await BudgetItem.deleteMany({
+
+                        activityId:
+                            activity._id
+
+                    });
+
+                }
+
+
+                // DELETE ACTIVITIES
+                await StopActivity.deleteMany({
+
+                    dayPlanId: day._id
+
+                });
+
+            }
+
+
+            /*
+            ========================================
+            DELETE DAY PLANS
+            ========================================
+            */
+
+            await DayPlan.deleteMany({
+
+                stopId: stop._id
+
+            });
+
+
+            /*
+            ========================================
+            DELETE STOP BUDGETS
+            ========================================
+            */
+
+            await BudgetItem.deleteMany({
+
+                stopId: stop._id
+
+            });
+
+
+            /*
+            ========================================
+            DELETE STOP
+            ========================================
+            */
 
             await Stop.findByIdAndDelete(
                 req.params.id

@@ -4,6 +4,8 @@ const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const BudgetItem = require("./models/BudgetItem");
+const TripNote = require("./models/TripNote");
 
 const app = express();
 
@@ -28,6 +30,11 @@ app.use("/api/cities", require("./routes/cityRoutes"));
 app.use("/api/dayplans", require("./routes/dayPlanRoutes"));
 app.use("/api/activities", require("./routes/activityRoutes"));
 app.use("/api/activity-catalog", require("./routes/activityCatalogRoutes"));
+app.use("/api/budget", require("./routes/budgetRoutes"));
+app.use("/api/packing", require("./routes/packingRoutes"));
+app.use("/api/notes", require("./routes/noteRoutes"));
+app.use("/api/community", require("./routes/communityRoutes"));
+
 
 app.listen(5000, () => {
     console.log("Server Running");

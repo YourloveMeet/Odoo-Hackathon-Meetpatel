@@ -7,7 +7,9 @@ const auth = require("../middleware/auth");
 const StopActivity = require("../models/StopActivity");
 
 const DayPlan = require("../models/DayPlan");
+const Stop = require("../models/Stop");
 
+const BudgetItem = require("../models/BudgetItem");
 
 
 /*
@@ -89,6 +91,43 @@ router.post(
 
             await dayPlan.save();
 
+            /*
+========================================
+AUTO CREATE BUDGET ITEM
+========================================
+*/
+
+            // GET STOP
+            const stop = await Stop.findById(
+                dayPlan.stopId
+            );
+
+
+            // CREATE BUDGET ITEM
+            await BudgetItem.create({
+
+                tripId: stop.tripId,
+
+                stopId: stop._id,
+
+                dayPlanId: dayPlan._id,
+
+                activityId: activity._id,
+
+                category: "activities",
+
+                title:
+                    customName ||
+                    "Activity Expense",
+
+                description:
+                    notes || "",
+
+                amount: Number(cost || 0),
+
+                date: dayPlan.date
+
+            });
 
             res.status(201).json({
 
@@ -327,7 +366,64 @@ router.put(
 
 
             await activity.save();
+            /*
+            ========================================
+            UPDATE DAY PLAN EXPENSE
+            ========================================
+            */
 
+            const dayPlan =
+                await DayPlan.findById(
+                    activity.dayPlanId
+                );
+
+            if (dayPlan) {
+
+                const difference =
+
+                    Number(activity.cost || 0)
+
+                    -
+
+                    Number(oldCost || 0);
+
+
+                dayPlan.totalExpense += difference;
+
+                await dayPlan.save();
+
+            }
+
+
+
+            /*
+            ========================================
+            UPDATE BUDGET ITEM
+            ========================================
+            */
+
+            await BudgetItem.findOneAndUpdate(
+
+                {
+
+                    activityId: activity._id
+
+                },
+
+                {
+
+                    title:
+                        activity.customName,
+
+                    description:
+                        activity.notes,
+
+                    amount:
+                        activity.cost
+
+                }
+
+            );
 
             res.json({
 
@@ -415,7 +511,17 @@ router.delete(
                 req.params.id
             );
 
+            /*
+            ========================================
+            DELETE BUDGET ITEM
+            ========================================
+            */
 
+            await BudgetItem.deleteMany({
+
+                activityId: activity._id
+
+            });
             res.json({
 
                 success: true,
