@@ -141,6 +141,37 @@ export default function ItineraryPage({ params }: { params: Promise<{ id: string
     }
   };
 
+  const handleTogglePrivacy = async () => {
+    if (!trip) return;
+    const newStatus = !trip.isPublic;
+    
+    // Optimistic update
+    setTrip({ ...trip, isPublic: newStatus });
+    
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(ENDPOINTS.TRIPS.UPDATE(id), {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ isPublic: newStatus })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        // Revert on failure
+        setTrip({ ...trip, isPublic: !newStatus });
+        showNotification("Failed to update privacy settings", "error");
+      } else {
+        showNotification(`Trip is now ${newStatus ? 'Public' : 'Private'}`, "success");
+      }
+    } catch (error) {
+      setTrip({ ...trip, isPublic: !newStatus });
+      showNotification("Server error", "error");
+    }
+  };
+
   const loadFullItinerary = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -691,10 +722,25 @@ export default function ItineraryPage({ params }: { params: Promise<{ id: string
             <h1 className="text-4xl font-light tracking-tight italic text-emerald-900">Build <span className="font-semibold">Itinerary</span></h1>
             <p className="text-emerald-900/60 font-medium">{trip?.name} • {trip?.description}</p>
           </div>
-          <button onClick={() => handleOpenStopModal()} className="px-8 py-4 bg-emerald-900 text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-800 transition-all shadow-[0_10px_30px_-10px_rgba(6,78,59,0.5)] flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-            Add New Stop
-          </button>
+          <div className="flex items-center gap-4">
+            
+            {/* Privacy Toggle */}
+            <div className="flex items-center gap-3 bg-white/60 border border-emerald-900/5 px-5 py-3 rounded-full backdrop-blur-md">
+              <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${!trip?.isPublic ? 'text-emerald-900' : 'text-emerald-900/30'}`}>Private</span>
+              <button 
+                onClick={handleTogglePrivacy}
+                className={`w-12 h-6 rounded-full relative transition-colors duration-300 focus:outline-none shadow-inner ${trip?.isPublic ? 'bg-emerald-500' : 'bg-emerald-900/20'}`}
+              >
+                <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-all duration-300 shadow-sm ${trip?.isPublic ? 'left-7' : 'left-1'}`}></div>
+              </button>
+              <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${trip?.isPublic ? 'text-emerald-900' : 'text-emerald-900/30'}`}>Public</span>
+            </div>
+
+            <button onClick={() => handleOpenStopModal()} className="px-8 py-4 bg-emerald-900 text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-800 transition-all shadow-[0_10px_30px_-10px_rgba(6,78,59,0.5)] flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+              Add New Stop
+            </button>
+          </div>
         </div>
 
         <div className="space-y-12 relative before:absolute before:inset-y-0 before:left-8 before:w-px before:bg-emerald-900/10 before:-z-10 pl-4">

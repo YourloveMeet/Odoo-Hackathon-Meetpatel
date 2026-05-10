@@ -14,6 +14,7 @@ export const ENDPOINTS = {
     MY_TRIPS: `${API_BASE_URL}/trips/my-trips`,
     CREATE: `${API_BASE_URL}/trips/create`,
     GET_SINGLE: (id: string) => `${API_BASE_URL}/trips/${id}`,
+    UPDATE: (id: string) => `${API_BASE_URL}/trips/update/${id}`,
     UPDATE_ITINERARY: (id: string) => `${API_BASE_URL}/trips/itinerary/${id}`,
   },
   COMMUNITY: {
@@ -40,6 +41,15 @@ export const ENDPOINTS = {
     GET_BY_DAYPLAN: (dayPlanId: string) => `${API_BASE_URL}/activities/day/${dayPlanId}`,
     DELETE: (id: string) => `${API_BASE_URL}/activities/delete/${id}`,
   },
-  // Add other feature endpoints here as the app grows
-  // e.g., TRIPS: { CREATE: `${API_BASE_URL}/trips/create` }
+  PACKING: {
+    GET_CHECKLIST: (tripId: string) => `${API_BASE_URL}/packing/checklist/${tripId}`,
+    CREATE: `${API_BASE_URL}/packing/create`,
+    TOGGLE: (itemId: string) => `${API_BASE_URL}/packing/toggle/${itemId}`,
+  },
+  NOTES: {
+    GET_BY_TRIP: (tripId: string) => `${API_BASE_URL}/notes/trip/${tripId}`,
+    CREATE: `${API_BASE_URL}/notes/create`,
+    UPDATE: (id: string) => `${API_BASE_URL}/notes/update/${id}`,
+    DELETE: (id: string) => `${API_BASE_URL}/notes/delete/${id}`,
+  },
 };

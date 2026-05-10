@@ -119,7 +119,19 @@ export default function TripView({ params }: { params: Promise<{ id: string }> }
           <Link href="/dashboard" className="text-2xl font-bold tracking-tighter italic text-emerald-900 hover:text-emerald-700 transition-colors">
             Traveloop
           </Link>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
+            <Link href={`/trip/${id}/journal`} className="px-6 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-all flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              Trip Journal
+            </Link>
+            <Link href={`/trip/${id}/checklist`} className="px-6 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-all flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              Packing Checklist
+            </Link>
             <Link href={`/trip/${id}/itinerary`} className="px-6 py-2 bg-emerald-900 hover:bg-emerald-800 text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_10px_30px_-10px_rgba(6,78,59,0.5)]">
               Edit Itinerary
             </Link>
@@ -143,6 +155,32 @@ export default function TripView({ params }: { params: Promise<{ id: string }> }
             Total Budget: {trip?.totalBudget} {trip?.currency}
           </p>
         </div>
+
+        {/* Checklist Quick Access Banner */}
+        <Link href={`/trip/${id}/checklist`} className="block mb-12 group">
+          <div className="relative overflow-hidden bg-white/70 border border-emerald-900/10 rounded-3xl p-6 flex items-center justify-between hover:shadow-xl hover:border-emerald-900/20 transition-all duration-300 backdrop-blur-sm cursor-pointer">
+            <div className="flex items-center gap-5">
+              <div className="w-14 h-14 bg-emerald-900 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-900/40 mb-1">Don't forget anything</p>
+                <h3 className="text-xl font-semibold text-emerald-900">Packing Checklist</h3>
+                <p className="text-sm text-emerald-900/50 mt-0.5">Documents · Clothing · Electronics and more</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-900/40 group-hover:text-emerald-700 transition-colors">Open Checklist</span>
+              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center group-hover:bg-emerald-900 group-hover:text-white transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-900 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </Link>
 
         {/* Seamless Timeline */}
         <div className="relative">
