@@ -86,11 +86,11 @@ export default function Dashboard() {
               <a href="#" className="hover:text-emerald-600 transition-colors">My Trips</a>
               <a href="#" className="hover:text-emerald-600 transition-colors">Support</a>
             </nav>
-            <div className="w-10 h-10 rounded-full border border-emerald-900/10 bg-white/50 flex items-center justify-center cursor-pointer hover:bg-emerald-100 transition-all shadow-sm">
+            <Link href="/profile" className="w-10 h-10 rounded-full border border-emerald-900/10 bg-white/50 flex items-center justify-center cursor-pointer hover:bg-emerald-100 transition-all shadow-sm">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-            </div>
+            </Link>
           </div>
         </div>
       </header>
@@ -119,7 +119,7 @@ export default function Dashboard() {
               placeholder="Search your next destination..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white/60 border border-emerald-900/5 rounded-2xl py-4 pl-14 pr-6 outline-none focus:border-emerald-900/20 transition-all placeholder:text-emerald-900/20 text-emerald-900 shadow-sm backdrop-blur-md"
+              className="w-full bg-white/60 border border-emerald-900/5 rounded-2xl py-4 pl-14 pr-6 outline-none focus:border-emerald-900/20 transition-all placeholder:text-emerald-900/40 text-emerald-900 shadow-sm backdrop-blur-md"
             />
             <svg xmlns="http://www.w3.org/2000/svg" className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-emerald-900/20 group-focus-within:text-emerald-700 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -169,20 +169,22 @@ export default function Dashboard() {
               ))
             ) : filteredTrips.length > 0 ? (
               filteredTrips.map((trip) => (
-                <div key={trip._id} className="relative h-96 rounded-[3rem] overflow-hidden group shadow-xl border border-white/50">
-                  <img src={trip.coverPhoto || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=1000"} alt={trip.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                  <div className="absolute bottom-8 left-8">
-                    <p className="text-white/60 text-[8px] font-bold uppercase tracking-[0.4em] mb-2">
-                      {new Date(trip.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-                    </p>
-                    <h4 className="text-xl font-light tracking-tight text-white group-hover:text-emerald-200 transition-colors">{trip.name}</h4>
+                <Link href={`/trip/${trip._id}/itinerary`} key={trip._id}>
+                  <div className="relative h-96 rounded-[3rem] overflow-hidden group shadow-xl border border-white/50 cursor-pointer">
+                    <img src={trip.coverPhoto || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=1000"} alt={trip.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div className="absolute bottom-8 left-8">
+                      <p className="text-white/60 text-[8px] font-bold uppercase tracking-[0.4em] mb-2">
+                        {new Date(trip.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                      </p>
+                      <h4 className="text-xl font-light tracking-tight text-white group-hover:text-emerald-200 transition-colors">{trip.name}</h4>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <div className="col-span-full py-20 text-center space-y-4">
-                <div className="text-emerald-900/20 text-5xl font-light italic">No trips found</div>
+                <div className="text-emerald-900/60 text-5xl font-light italic">No trips found</div>
                 <p className="text-emerald-900/40 text-xs font-bold uppercase tracking-widest">Try a different search or plan a new adventure</p>
               </div>
             )}
@@ -191,12 +193,14 @@ export default function Dashboard() {
       </main>
 
       {/* Floating Action Button */}
-      <button className="fixed bottom-10 right-10 z-50 px-8 py-5 rounded-full bg-emerald-900 text-white font-bold tracking-widest uppercase text-[10px] shadow-[0_20px_50px_-15px_rgba(6,78,59,0.3)] hover:bg-emerald-800 hover:scale-105 transition-all flex items-center gap-3">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-        </svg>
-        New Trip
-      </button>
+      <Link href="/create-trip">
+        <button className="fixed bottom-10 right-10 z-50 px-8 py-5 rounded-full bg-emerald-900 text-white font-bold tracking-widest uppercase text-[10px] shadow-[0_20px_50px_-15px_rgba(6,78,59,0.3)] hover:bg-emerald-800 hover:scale-105 transition-all flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+          </svg>
+          New Trip
+        </button>
+      </Link>
     </div>
   );
 }

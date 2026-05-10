@@ -143,31 +143,31 @@ export default function Register() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 md:gap-y-4">
             <input 
               type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange}
-              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white font-light text-sm md:text-base" required
+              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white font-light text-sm md:text-base" required
             />
             <input 
               type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange}
-              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white font-light text-sm md:text-base" required
+              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white font-light text-sm md:text-base" required
             />
             <input 
               type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange}
-              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white font-light text-sm md:text-base" required
+              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white font-light text-sm md:text-base" required
             />
             <input 
               type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange}
-              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white font-light text-sm md:text-base" required
+              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white font-light text-sm md:text-base" required
             />
             <input 
               type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange}
-              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white font-light text-sm md:text-base" required
+              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white font-light text-sm md:text-base" required
             />
             <input 
               type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange}
-              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white font-light text-sm md:text-base" required
+              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white font-light text-sm md:text-base" required
             />
             <input 
               type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange}
-              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white font-light text-sm md:text-base" required
+              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white font-light text-sm md:text-base" required
             />
           </div>
 
@@ -175,7 +175,7 @@ export default function Register() {
             <textarea 
               name="additionalInfo" placeholder="Travel Preferences ...." value={formData.additionalInfo} onChange={handleChange}
               rows={1}
-              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white font-light text-sm md:text-base resize-none"
+              className="w-full px-5 py-2.5 md:py-3 bg-emerald-950/40 rounded-xl md:rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white font-light text-sm md:text-base resize-none"
             ></textarea>
           </div>
 

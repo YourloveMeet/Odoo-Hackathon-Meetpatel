@@ -105,7 +105,7 @@ export default function Login() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-6 py-4 bg-emerald-950/40 rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white text-lg font-light"
+                className="w-full px-6 py-4 bg-emerald-950/40 rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white text-lg font-light"
                 required
               />
             </div>
