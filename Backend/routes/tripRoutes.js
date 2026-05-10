@@ -543,4 +543,86 @@ router.delete(
 
 
 
+/*
+========================================
+UPDATE ITINERARY
+========================================
+*/
+
+router.post(
+
+    "/itinerary/:id",
+
+    auth,
+
+    async function (req, res) {
+
+        try {
+
+            const trip = await Trip.findById(
+                req.params.id
+            );
+
+            if (!trip) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "Trip not found"
+
+                });
+
+            }
+
+
+            // SECURITY
+            if (
+                trip.userId.toString() !==
+                req.user.id
+            ) {
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message: "Unauthorized"
+
+                });
+
+            }
+
+
+            trip.itinerary = req.body.itinerary;
+
+
+            await trip.save();
+
+
+            res.json({
+
+                success: true,
+
+                message: "Itinerary Updated",
+
+                trip
+
+            });
+
+        }
+        catch (err) {
+
+            res.status(500).json({
+
+                success: false,
+
+                message: err.message
+
+            });
+
+        }
+
+    });
+
+
 module.exports = router;

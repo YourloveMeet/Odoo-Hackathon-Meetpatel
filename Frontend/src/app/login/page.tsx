@@ -7,11 +7,26 @@ import { ENDPOINTS } from "@/lib/api";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'warning'; visible: boolean }>({
+    message: '',
+    type: 'success',
+    visible: false
+  });
+
+  const showNotification = (message: string, type: 'success' | 'error' | 'warning') => {
+    setNotification({ message, type, visible: true });
+    setTimeout(() => setNotification(prev => ({ ...prev, visible: false })), 4000);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
+      if (!email || !password) {
+        showNotification("Please fill in all fields", "warning");
+        return;
+      }
+
       const response = await fetch(ENDPOINTS.AUTH.LOGIN, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -21,15 +36,18 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Login successful:", data);
-        alert("Login successful!");
-        // Store token/redirect logic here
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        showNotification("Login successful! Redirecting...", "success");
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 1500);
       } else {
-        alert(data.message || "Login failed");
+        showNotification(data.message || "Invalid credentials", "error");
       }
     } catch (error) {
       console.error("Login failed:", error);
-      alert("An error occurred during login.");
+      showNotification("Connection error. Please try again.", "error");
     }
   };
 
@@ -38,6 +56,21 @@ export default function Login() {
       className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative px-4 overflow-hidden"
       style={{ backgroundImage: "url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop')" }}
     >
+      {/* Toast Notification */}
+      <div className={`fixed top-10 left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 ${notification.visible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0 pointer-events-none'}`}>
+        <div className={`px-6 py-3 rounded-full backdrop-blur-xl border flex items-center gap-3 shadow-2xl ${
+          notification.type === 'success' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 
+          notification.type === 'error' ? 'bg-red-500/20 border-red-500/50 text-red-400' : 
+          'bg-amber-500/20 border-amber-500/50 text-amber-400'
+        }`}>
+          <div className={`w-2 h-2 rounded-full animate-pulse ${
+            notification.type === 'success' ? 'bg-emerald-400' : 
+            notification.type === 'error' ? 'bg-red-400' : 'bg-amber-400'
+          }`}></div>
+          <span className="text-sm font-medium tracking-wide">{notification.message}</span>
+        </div>
+      </div>
+
       <div className="absolute inset-0 bg-emerald-950/40 backdrop-blur-[1px]"></div>
 
       <div className="absolute top-[-10%] right-[-5%] w-[30%] h-[30%] bg-emerald-400/10 rounded-full blur-[100px]"></div>
@@ -72,7 +105,7 @@ export default function Login() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-6 py-4 bg-emerald-950/40 rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/30 text-white text-lg font-light"
+                className="w-full px-6 py-4 bg-emerald-950/40 rounded-2xl border border-emerald-400/20 focus:border-emerald-400 outline-none transition-all placeholder:text-emerald-100/60 text-white text-lg font-light"
                 required
               />
             </div>
