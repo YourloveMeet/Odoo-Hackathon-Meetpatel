@@ -29,6 +29,14 @@ router.post(
 
                 tripId,
 
+                stopId,
+
+                dayPlanId,
+
+                activityId,
+
+                noteType,
+
                 title,
 
                 note
@@ -40,6 +48,14 @@ router.post(
                 await TripNote.create({
 
                     tripId,
+
+                    stopId,
+
+                    dayPlanId,
+
+                    activityId,
+
+                    noteType,
 
                     title,
 
@@ -73,7 +89,6 @@ router.post(
         }
 
     });
-
 
 
 
@@ -135,6 +150,185 @@ router.get(
 
     });
 
+
+
+
+
+
+
+/*
+========================================
+GET NOTES OF STOP
+========================================
+*/
+
+router.get(
+
+    "/stop/:stopId",
+
+    auth,
+
+    async function (req, res) {
+
+        try {
+
+            const notes =
+                await TripNote.find({
+
+                    stopId:
+                        req.params.stopId
+
+                })
+
+                    .sort({
+                        createdAt: -1
+                    });
+
+
+            res.json({
+
+                success: true,
+
+                total: notes.length,
+
+                notes
+
+            });
+
+        }
+        catch (err) {
+
+            res.status(500).json({
+
+                success: false,
+
+                message: err.message
+
+            });
+
+        }
+
+    });
+
+
+
+
+
+
+
+/*
+========================================
+GET NOTES OF DAY
+========================================
+*/
+
+router.get(
+
+    "/day/:dayPlanId",
+
+    auth,
+
+    async function (req, res) {
+
+        try {
+
+            const notes =
+                await TripNote.find({
+
+                    dayPlanId:
+                        req.params.dayPlanId
+
+                })
+
+                    .sort({
+                        createdAt: -1
+                    });
+
+
+            res.json({
+
+                success: true,
+
+                total: notes.length,
+
+                notes
+
+            });
+
+        }
+        catch (err) {
+
+            res.status(500).json({
+
+                success: false,
+
+                message: err.message
+
+            });
+
+        }
+
+    });
+
+
+
+
+
+
+
+/*
+========================================
+GET NOTES OF ACTIVITY
+========================================
+*/
+
+router.get(
+
+    "/activity/:activityId",
+
+    auth,
+
+    async function (req, res) {
+
+        try {
+
+            const notes =
+                await TripNote.find({
+
+                    activityId:
+                        req.params.activityId
+
+                })
+
+                    .sort({
+                        createdAt: -1
+                    });
+
+
+            res.json({
+
+                success: true,
+
+                total: notes.length,
+
+                notes
+
+            });
+
+        }
+        catch (err) {
+
+            res.status(500).json({
+
+                success: false,
+
+                message: err.message
+
+            });
+
+        }
+
+    });
 
 
 
@@ -206,7 +400,6 @@ router.get(
 
 
 
-
 /*
 ========================================
 UPDATE NOTE
@@ -246,7 +439,9 @@ router.put(
 
                 title,
 
-                note: noteText
+                note: noteText,
+
+                noteType
 
             } = req.body;
 
@@ -260,6 +455,13 @@ router.put(
             if (noteText) {
 
                 note.note = noteText;
+
+            }
+
+            if (noteType) {
+
+                note.noteType =
+                    noteType;
 
             }
 
@@ -292,7 +494,6 @@ router.put(
         }
 
     });
-
 
 
 
