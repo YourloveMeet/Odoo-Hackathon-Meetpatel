@@ -9,6 +9,7 @@ const User = require("../models/User");
 const upload = require("../middleware/upload");
 
 
+
 // REGISTER API
 // REGISTER
 router.post(
@@ -51,32 +52,11 @@ router.post(
             // PHOTO UPLOAD
             if (req.file) {
 
-                const compressedImagePath =
-                    "uploads/users/compressed-" +
+                photoUrl =
+                    "http://localhost:5000/uploads/users/" +
                     req.file.filename;
 
-                // COMPRESS IMAGE
-                await sharp(req.file.path)
-
-                    .resize(300)
-
-                    .jpeg({
-                        quality: 70
-                    })
-
-                    .toFile(compressedImagePath);
-
-
-                // DELETE ORIGINAL
-                fs.unlinkSync(req.file.path);
-
-
-                photoUrl =
-                    "http://localhost:5000/" +
-                    compressedImagePath.replace(/\\/g, "/");
-
             }
-
 
             // HASH PASSWORD
             const hashedPassword =
@@ -228,6 +208,122 @@ router.post("/login", async function (req, res) {
     }
 
 });
+
+router.put(
+
+    "/update-profile",
+
+    auth,
+
+    upload.single("photo"),
+
+    async function (req, res) {
+
+        try {
+
+            const userId = req.user.id;
+
+            const user = await User.findById(userId);
+
+            if (!user) {
+
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+
+            }
+
+
+            const {
+                firstName,
+                lastName,
+                phoneNumber,
+                city,
+                country,
+                additionalInfo
+            } = req.body;
+
+
+            // UPDATE FIELDS
+            if (firstName) {
+                user.firstName = firstName;
+            }
+
+            if (lastName) {
+                user.lastName = lastName;
+            }
+
+            if (phoneNumber) {
+                user.phoneNumber = phoneNumber;
+            }
+
+            if (city) {
+                user.city = city;
+            }
+
+            if (country) {
+                user.country = country;
+            }
+
+            if (additionalInfo) {
+                user.additionalInfo = additionalInfo;
+            }
+
+
+            // PHOTO UPDATE
+            if (req.file) {
+
+                // DELETE OLD PHOTO
+                if (user.photo) {
+
+                    const oldImagePath =
+                        user.photo.replace(
+                            "http://localhost:5000/",
+                            ""
+                        );
+
+                    if (fs.existsSync(oldImagePath)) {
+
+                        fs.unlinkSync(oldImagePath);
+
+                    }
+
+                }
+
+
+                // SAVE URL
+                user.photo =
+                    "http://localhost:5000/uploads/users/" +
+                    req.file.filename;
+            }
+
+
+            await user.save();
+
+
+            res.status(200).json({
+
+                success: true,
+
+                message: "Profile Updated",
+
+                user
+
+            });
+
+        }
+        catch (err) {
+
+            res.status(500).json({
+                success: false,
+                message: err.message
+            });
+
+        }
+
+    });
+
 
 router.get("/profile", auth, async function (req, res) {
 
